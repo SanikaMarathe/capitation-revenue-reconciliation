@@ -21,6 +21,7 @@ from trace import close_step_lines
 from engine.pricing import RateBook
 from engine.rate_validation import diff
 from governance import approvals
+from llm.provider import LLMError
 from schemas.enums import Category, DiscrepancyCode, Region
 from storage import repo
 from workflow import demo
@@ -220,8 +221,20 @@ def _doc_card(conn, now, path) -> None:
               f"<i>{html.escape(path.name)}</i> · a {kind} from the state is waiting in the inbox. The AI will read "
               "it and pull out the rates. Nothing changes until a person approves them.")
         if st.button("Let the AI read it", key=f"read-{path.name}", type="primary"):
-            with st.spinner("The AI is reading the document…"):
-                orchestrator().ingest_document(path, received=now.date(), version_id=demo.next_version_id(conn), at=now)
+            try:
+                with st.spinner("The AI is reading the document…"):
+                    orchestrator().ingest_document(path, received=now.date(), version_id=demo.next_version_id(conn),
+                                                   at=now)
+            except LLMError as exc:
+                # Outage, invalid output after one retry, or spend cap. Nothing is saved before the AI answers,
+                # so the document stays in the inbox and the books are untouched.
+                st.error(f"The AI couldn't read this document ({type(exc).__name__}). Nothing was changed; "
+                         "the document is still in the inbox, so try again in a moment.")
+                return
+            except Exception as exc:  # e.g. a wrong API key: shown plainly, never hidden
+                st.error(f"The AI call failed: {type(exc).__name__}: {exc}. Check the API key in .env and the "
+                         "provider in config.yaml. Nothing was changed.")
+                return
             _done("The AI has read the document.")
 
 

@@ -79,3 +79,29 @@ def test_close_completes_and_variances_go_to_humans_when_investigator_is_down(mo
     assert statuses == {VarianceStatus.NEEDS_HUMAN.value}           # nothing auto-explained, nothing lost
     total = sum((l.delta for l in repo.active_adjustment_lines(conn)), 0)
     assert str(total) == "23931.00"                                # money is identical with the AI down
+
+
+def test_extraction_outage_saves_nothing():
+    """If the provider is down while reading a rate document, nothing is written: no document row, no draft
+    version, no audit event. The document stays in the inbox and can be read again later."""
+    from datetime import date, datetime
+
+    from agents import rate_extractor
+    from common.config import get_settings
+    from llm.factory import build_client
+    from storage.db import connect
+
+    def down(_request):
+        raise LLMUnavailable("simulated outage")
+
+    provider = mock_responders.mock_provider()
+    provider.register("rate_extraction", down)
+    conn = connect(":memory:")
+    client = build_client(get_settings(), conn=conn, provider=provider, cache_mode="off")
+    counts = lambda: [conn.execute(f"SELECT count(*) FROM {t}").fetchone()[0]  # noqa: E731
+                      for t in ("source_documents", "rate_versions", "rates", "audit_log")]
+    before = counts()
+    with pytest.raises(LLMUnavailable):
+        rate_extractor.extract(conn, client, pipeline.RAW / "rate_docs" / pipeline.DOCS["v1"], received=date(2025, 12, 1), version_id="v1",
+                               as_of=datetime(2025, 12, 1, 10))
+    assert counts() == before
