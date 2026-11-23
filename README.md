@@ -1,5 +1,8 @@
 # Capitation Revenue Reconciliation (prototype)
 
+> 📊 **Deck (main deliverable): [Capitation_Reconciliation.pptx](Capitation_Reconciliation.pptx)** · open the file and
+> click **Download** (or "View raw") to view it in PowerPoint.
+
 Checks whether a health plan was paid correctly by the state each month, explains any differences, and corrects
 past months when rates change. A deterministic engine computes every dollar, bounded Claude agents read rate notices
 and explain gaps, and nothing reaches the ledger without an audited human approval. **All data is synthetic.**
@@ -8,7 +11,7 @@ and explain gaps, and nothing reaches the ledger without an audited human approv
 
 | Document | What's in it |
 |---|---|
-| [`deck/Capitation_Reconciliation.pptx`](deck/Capitation_Reconciliation.pptx) | **The deliverable deck:** understanding, approach, architecture and workflow diagrams, evaluation, decisions |
+| [`Capitation_Reconciliation.pptx`](Capitation_Reconciliation.pptx) | **The deliverable deck:** understanding, approach, architecture and workflow diagrams, evaluation, decisions |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | As-built architecture, 11 Mermaid diagrams (prototype, data layers, close workflow, retro sequence, agents, privacy path, state machines, Azure target), plan vs. built |
 | [`docs/DECISIONS.md`](docs/DECISIONS.md) | 65 decisions: options, why, tradeoff, including bugs the build caught |
 | [`evals/results.md`](evals/results.md) | Measured results against ground truth (all calls on Claude Haiku), with charts in `evals/charts/` |

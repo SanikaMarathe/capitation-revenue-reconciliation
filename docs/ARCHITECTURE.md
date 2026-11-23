@@ -2,7 +2,7 @@
 
 > **Status: as built** (prototype on synthetic data). Started from a plan frozen after two design reviews;
 > section 13 lists every place the build differs from that plan. Why each choice was made: `docs/DECISIONS.md`.
-> Measured results: `evals/results.md`. Slides: `deck/Capitation_Reconciliation.pptx`.
+> Measured results: `evals/results.md`. Slides: `Capitation_Reconciliation.pptx`.
 
 **Design mantra:** *Code computes. AI reads and explains. Humans approve.*
 
