@@ -1,0 +1,372 @@
+{
+ "provider": "anthropic",
+ "cache_mode": "replay",
+ "extraction": {
+  "v1": {
+   "file": "v1_rate_notice_CY2026.pdf",
+   "format": "pdf",
+   "truth_cells": 16,
+   "cells_exact": 16,
+   "cell_accuracy_pct": 100.0,
+   "effective_dates_correct_pct": 100.0,
+   "extra_cells": 0,
+   "kind_correct": true,
+   "retro_flag_correct": true,
+   "published_date_correct": true,
+   "validation_errors": 0,
+   "validation_flags": 0
+  },
+  "v2": {
+   "file": "v2_rate_sheet_eff_2026-04-01.xlsx",
+   "format": "xlsx",
+   "truth_cells": 16,
+   "cells_exact": 16,
+   "cell_accuracy_pct": 100.0,
+   "effective_dates_correct_pct": 100.0,
+   "extra_cells": 0,
+   "kind_correct": true,
+   "retro_flag_correct": true,
+   "published_date_correct": true,
+   "validation_errors": 0,
+   "validation_flags": 0
+  },
+  "v3": {
+   "file": "v3_rate_amendment_email.txt",
+   "format": "email",
+   "truth_cells": 2,
+   "cells_exact": 2,
+   "cell_accuracy_pct": 100.0,
+   "effective_dates_correct_pct": 100.0,
+   "extra_cells": 0,
+   "kind_correct": true,
+   "retro_flag_correct": true,
+   "published_date_correct": true,
+   "validation_errors": 0,
+   "validation_flags": 1
+  }
+ },
+ "detection": {
+  "seeded_payment_issues": 340,
+  "detected": 340,
+  "recall_pct": 100.0,
+  "variances_flagged": 462,
+  "false_positives": 0,
+  "clean_member_months": 9950,
+  "false_positive_rate_pct": 0.0,
+  "per_code": {
+   "DUPLICATE_PAYMENT": {
+    "seeded": 25,
+    "detected": 25,
+    "recall_pct": 100.0
+   },
+   "MISSING_FROM_REMIT": {
+    "seeded": 60,
+    "detected": 60,
+    "recall_pct": 100.0
+   },
+   "RATE_CELL_MISMATCH": {
+    "seeded": 45,
+    "detected": 45,
+    "recall_pct": 100.0
+   },
+   "RECOUPMENT": {
+    "seeded": 23,
+    "detected": 23,
+    "recall_pct": 100.0
+   },
+   "STALE_RATE": {
+    "seeded": 175,
+    "detected": 175,
+    "recall_pct": 100.0
+   },
+   "UNEXPECTED_PAYMENT": {
+    "seeded": 30,
+    "detected": 30,
+    "recall_pct": 100.0
+   }
+  }
+ },
+ "classification": {
+  "rules_only": {
+   "variances": 462,
+   "exact_match_pct": 94.6,
+   "single_cause": {
+    "n": 437,
+    "correct_pct": 100.0
+   },
+   "multi_cause": {
+    "n": 25,
+    "exact_set_pct": 0.0,
+    "primary_in_truth_pct": 0.0
+   },
+   "unresolved": 25
+  },
+  "rules_plus_llm": {
+   "variances": 462,
+   "exact_match_pct": 97.4,
+   "single_cause": {
+    "n": 437,
+    "correct_pct": 100.0
+   },
+   "multi_cause": {
+    "n": 25,
+    "exact_set_pct": 52.0,
+    "primary_in_truth_pct": 100.0
+   },
+   "unresolved": 0
+  },
+  "confusion_single_cause": [
+   {
+    "truth": "DUPLICATE_PAYMENT",
+    "predicted": "DUPLICATE_PAYMENT",
+    "n": 18
+   },
+   {
+    "truth": "MISSING_FROM_REMIT",
+    "predicted": "MISSING_FROM_REMIT",
+    "n": 57
+   },
+   {
+    "truth": "RATE_CELL_MISMATCH",
+    "predicted": "RATE_CELL_MISMATCH",
+    "n": 43
+   },
+   {
+    "truth": "RECOUPMENT",
+    "predicted": "RECOUPMENT",
+    "n": 10
+   },
+   {
+    "truth": "RETRO_RATE_CHANGE",
+    "predicted": "RETRO_RATE_CHANGE",
+    "n": 122
+   },
+   {
+    "truth": "STALE_RATE",
+    "predicted": "STALE_RATE",
+    "n": 170
+   },
+   {
+    "truth": "UNEXPECTED_PAYMENT",
+    "predicted": "UNEXPECTED_PAYMENT",
+    "n": 17
+   }
+  ]
+ },
+ "groundedness": {
+  "findings": 140,
+  "grounded": 139,
+  "grounded_pct": 99.3,
+  "errors": 0,
+  "problem_types": {
+   "cites no evidence": 1
+  }
+ },
+ "memos": {
+  "total": 2,
+  "grounded": 2
+ },
+ "retro": {
+  "member_months_checked": 10944,
+  "member_months_exact": 10944,
+  "exact_pct": 100.0,
+  "retro_member_months_truth": 662,
+  "retro_total_truth": "23931.00",
+  "retro_total_engine": "23931.00",
+  "settlement_remaining_exact_pct": 100.0,
+  "adjustments": 2
+ },
+ "bank": {
+  "checks": [
+   {
+    "code": "BANK_TIMING",
+    "remit": "R-2026-02",
+    "deposit": "D0002",
+    "correct": true
+   },
+   {
+    "code": "BANK_SHORT",
+    "remit": "R-2026-03",
+    "deposit": "D0003",
+    "correct": true
+   },
+   {
+    "code": "NO_REFERENCE",
+    "remit": "R-2026-04",
+    "deposit": "D0004",
+    "correct": true
+   },
+   {
+    "code": "BANK_TIMING",
+    "remit": "R-2026-05",
+    "deposit": "D0005",
+    "correct": true
+   },
+   {
+    "code": "UNMATCHED_DEPOSIT",
+    "remit": "",
+    "deposit": "D9001",
+    "correct": true
+   }
+  ],
+  "correct": 5,
+  "total": 5,
+  "clean_remits_unflagged": true
+ },
+ "adversarial": {
+  "extraction": {
+   "rate misread x10 (e.g. $400 -> $4,000)": {
+    "n": 3,
+    "caught": 3,
+    "expected_to_catch": true
+   },
+   "rate off by $1": {
+    "n": 3,
+    "caught": 3,
+    "expected_to_catch": true
+   },
+   "mid-month effective date": {
+    "n": 3,
+    "caught": 3,
+    "expected_to_catch": true
+   },
+   "invented source reference": {
+    "n": 3,
+    "caught": 3,
+    "expected_to_catch": true
+   },
+   "dropped a rate cell": {
+    "n": 2,
+    "caught": 2,
+    "expected_to_catch": true
+   },
+   "two cells swapped WITH their references": {
+    "n": 2,
+    "caught": 0,
+    "expected_to_catch": false
+   }
+  },
+  "findings": {
+   "invented evidence id": {
+    "n": 40,
+    "caught": 40,
+    "expected_to_catch": true
+   },
+   "invented dollar amount in prose": {
+    "n": 40,
+    "caught": 40,
+    "expected_to_catch": true
+   },
+   "invented cited amount": {
+    "n": 40,
+    "caught": 40,
+    "expected_to_catch": true
+   },
+   "cause contradicting facts": {
+    "n": 40,
+    "caught": 40,
+    "expected_to_catch": true
+   }
+  },
+  "designed_catch_rate_pct": 100.0
+ },
+ "privacy": {
+  "scanned": {
+   "llm_cache": {
+    "records": 1058,
+    "leaks": 0,
+    "leak_types": []
+   },
+   "egress_log": {
+    "records": 15794,
+    "leaks": 0,
+    "leak_types": []
+   },
+   "audit_payloads": {
+    "records": 16,
+    "leaks": 0,
+    "leak_types": []
+   }
+  },
+  "total_records": 16868,
+  "total_leaks": 0,
+  "injection_test": {
+   "payloads": 200,
+   "blocked": 200,
+   "blocked_pct": 100.0
+  }
+ },
+ "cost": {
+  "provider": "anthropic",
+  "calls": 145,
+  "cache_hits": 145,
+  "cache_hit_pct": 100.0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "cost_usd": "0",
+  "by_task": {
+   "investigate_complex": 19,
+   "investigate_simple": 121,
+   "memo": 2,
+   "rate_extraction": 3
+  },
+  "models_by_task": {
+   "investigate_complex": {
+    "claude-haiku-5-5": 19
+   },
+   "investigate_simple": {
+    "claude-haiku-5-5": 121
+   },
+   "memo": {
+    "claude-haiku-5-5": 2
+   },
+   "rate_extraction": {
+    "claude-haiku-5-5": 3
+   }
+  },
+  "new_spend_usd": "0",
+  "uncached_equivalent_usd": "0.0793",
+  "cost_mode": false,
+  "wall_seconds": 23.1,
+  "llm_calls_if_one_per_variance": 462,
+  "llm_calls_grouped_explain_all": 140,
+  "llm_calls_triage_only": 19
+ },
+ "recorded_run_cost": {
+  "provider": "anthropic",
+  "calls": 145,
+  "cache_hits": 136,
+  "cache_hit_pct": 93.8,
+  "input_tokens": 28356,
+  "output_tokens": 14455,
+  "cost_usd": "0.0100631",
+  "by_task": {
+   "investigate_complex": 19,
+   "investigate_simple": 121,
+   "memo": 2,
+   "rate_extraction": 3
+  },
+  "models_by_task": {
+   "investigate_complex": {
+    "claude-haiku-5-5": 19
+   },
+   "investigate_simple": {
+    "claude-haiku-5-5": 121
+   },
+   "memo": {
+    "claude-haiku-5-5": 2
+   },
+   "rate_extraction": {
+    "claude-haiku-5-5": 3
+   }
+  },
+  "new_spend_usd": "0.0100631",
+  "uncached_equivalent_usd": "0.0793",
+  "cost_mode": false,
+  "wall_seconds": 97.1,
+  "llm_calls_if_one_per_variance": 462,
+  "llm_calls_grouped_explain_all": 140,
+  "llm_calls_triage_only": 19
+ },
+ "replay_reproducible": true
+}

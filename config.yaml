@@ -1,0 +1,36 @@
+# Central configuration. Secrets live in .env, never here.
+
+paths:
+  data_dir: data
+  db_file: data/recon.duckdb
+  llm_cache_dir: data/llm_cache
+  egress_log: data/egress_log.jsonl
+
+business:
+  proration_rule: first_of_month        # member counts for month M iff enrolled on day 1
+  coverage_months: ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06"]
+  rate_change_flag_pct: 15              # extracted rate moving more than this vs prior -> flag for approver
+  bank_match_window_days: 5             # amount/date candidates only; never auto-cleared
+
+llm:
+  provider: mock                        # mock | anthropic
+  cache_mode: read_write                # read_write | replay (cache miss = error) | off
+  max_validation_retries: 1             # invalid output -> one retry with the error, then needs_human
+  refusal_fallbacks: true               # server-side fallback on policy refusals (Opus-tier models)
+  tasks:                                # model per task. Haiku everywhere for the live check (2026-11-23);
+                                        # the recorded eval used Opus for extraction + some complex cases.
+    rate_extraction:      {model: claude-haiku-5-5, effort: high,   max_tokens: 16000}
+    investigate_simple:   {model: claude-haiku-5-5, effort: low,    max_tokens: 4000}
+    investigate_complex:  {model: claude-haiku-5-5, effort: high,   max_tokens: 16000}
+    memo:                 {model: claude-haiku-5-5, effort: low,    max_tokens: 4000}
+  pricing_usd_per_mtok:                 # for cost reporting only (input, output)
+    claude-opus-5-5:  [4.00, 20.00]
+    claude-haiku-5-5: [0.10, 0.50]
+
+privacy:
+  member_token_prefix: MBR
+  # Fields each agent may send to the LLM. Anything else in a payload is rejected.
+  allow_lists:
+    rate_extractor: [document_text, document_format, prior_rates, known_regions, known_categories]
+    investigator:   [variance, features, enrollment_history, rate_history, remittance_lines, bank_deposits, prior_explanations, allowed_categories, allowed_actions]
+    memo_writer:    [facts, placeholders]

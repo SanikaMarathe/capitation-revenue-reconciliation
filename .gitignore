@@ -1,0 +1,28 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+*.egg-info/
+
+# secrets: never commit. Copy .env.example to .env and add your own key.
+.env
+.streamlit/secrets.toml
+
+# generated locally (python tasks.py data), plus the local LLM cache and egress log
+data/*
+!data/samples/
+*.duckdb
+*.duckdb.wal
+
+# local tooling and private notes
+.claude/
+CLAUDE.md
+deck/build_deck.js
+docs/deck_outline.md
+
+# retired UI pages, no longer used by the app
+app/old_pages/
+
+# screenshots already embedded in the deck
+deck/assets/
